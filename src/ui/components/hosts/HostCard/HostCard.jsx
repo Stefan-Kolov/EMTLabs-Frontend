@@ -3,31 +3,28 @@ import InfoIcon from '@mui/icons-material/Info';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {Box, Button, Card, CardActions, CardContent, Typography} from "@mui/material";
-import DeleteAccommodationDialog from "../DeleteAccommodationDialog/DeleteAccommodationDialog.jsx";
-import {useNavigate} from "react-router";
-import EditAccommodationDialog from "../EditAccommodationDialog/EditAccommodationDialog.jsx";
+import DeleteHostDialog from "../DeleteHostDialog/DeleteHostDialog.jsx";
+import {useNavigate} from 'react-router'
+import EditHostDialog from "../EditHostDialog/EditHostDialog.jsx";
 
-const AccommodationCard = ({accommodation, onEdit, onDelete}) => {
+const HostCard = ({host, onEdit, onDelete}) => {
     const navigate = useNavigate();
-    const [deleteAccommodationDialogOpen, setDeleteAccommodationDialogOpen] = useState(false);
-    const [editAccommodationDialogOpen, setEditAccommodationDialogOpen] = useState(false);
+    const [deleteHostDialogOpen, setDeleteHostDialogOpen] = useState(false);
+    const [editHostDialogOpen, setEditHostDialogOpen] = useState(false);
 
     return (
         <>
             <Card sx={{boxShadow: 3, borderRadius: 2, p: 1}}>
                 <CardContent>
-                    <Typography variant="h5">{accommodation.name}</Typography>
-                    <Typography variant="h5">Category: {accommodation.category}</Typography>
-                    <Typography variant="h5">{accommodation.reserved}</Typography>
-                    <Typography variant="h5">Number of rooms: {accommodation.numRooms}</Typography>
-
+                    <Typography variant="h5">{host.name}</Typography>
+                    <Typography variant="h5">{host.surname}</Typography>
                 </CardContent>
                 <CardActions sx={{justifyContent: "space-between"}}>
                     <Button
                         size="small"
                         color="info"
                         startIcon={<InfoIcon/>}
-                        onClick={() => navigate(`/accommodations/${accommodation.id}`)}
+                        onClick={() => navigate(`/hosts/${host.id}`)}
                     >
                         Info
                     </Button>
@@ -37,7 +34,7 @@ const AccommodationCard = ({accommodation, onEdit, onDelete}) => {
                             color="warning"
                             startIcon={<EditIcon/>}
                             sx={{mr: "0.25rem"}}
-                            onClick={() => setEditAccommodationDialogOpen(true)}
+                            onClick={() => setEditHostDialogOpen(true)}
                         >
                             Edit
                         </Button>
@@ -45,27 +42,27 @@ const AccommodationCard = ({accommodation, onEdit, onDelete}) => {
                             size="small"
                             color="error"
                             startIcon={<DeleteIcon/>}
-                            onClick={() => setDeleteAccommodationDialogOpen(true)}
+                            onClick={() => setDeleteHostDialogOpen(true)}
                         >
                             Delete
                         </Button>
                     </Box>
                 </CardActions>
             </Card>
-            <EditAccommodationDialog
-                open={editAccommodationDialogOpen}
-                onClose={() => setEditAccommodationDialogOpen(false)}
-                accommodation={accommodation}
+            <EditHostDialog
+                open={editHostDialogOpen}
+                onClose={() => setEditHostDialogOpen(false)}
+                host={host}
                 onEdit={onEdit}
             />
-            <DeleteAccommodationDialog
-                open={deleteAccommodationDialogOpen}
-                onClose={() => setDeleteAccommodationDialogOpen(false)}
-                accommodation={accommodation}
+            <DeleteHostDialog
+                open={deleteHostDialogOpen}
+                onClose={() => setDeleteHostDialogOpen(false)}
+                host={host}
                 onDelete={onDelete}
             />
         </>
     );
 };
 
-export default AccommodationCard;
+export default HostCard;

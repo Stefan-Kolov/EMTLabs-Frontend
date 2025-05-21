@@ -1,11 +1,14 @@
-import React from 'react';
-import {Box, Button, CircularProgress} from "@mui/material";
+import React, {useState} from 'react';
+import {Box, Button, CircularProgress, FormControlLabel, Switch} from "@mui/material";
 import useAccommodations from "../../../hooks/useAccommodations.js";
 import AccommodationGrid from "../../components/accommodations/AccommodationsGrid/AccommodationsGrid.jsx";
-//import AddProductDialog from "../../components/products/AddProductDialog/AddProductDialog.jsx";
+import AddAccommodationDialog from "../../components/accommodations/AddAccommodationDialog/AddAccommodationDialog.jsx";
+import AccommodationTable from "../../components/accommodations/AccommodationTable/AccommodationTable.jsx";
 
 const AccommodationPage = () => {
-    const {accommodations, loading, onEdit, onDelete} = useAccommodations();
+    const {accommodations, loading, onAdd, onEdit, onDelete} = useAccommodations();
+    const [addAccommodationDialogOpen, setAddAccommodationDialogOpen] = useState(false);
+    const [gridView, setGridView] = useState(true);
 
     return (
         <>
@@ -15,21 +18,36 @@ const AccommodationPage = () => {
                         <CircularProgress/>
                     </Box>
                 )}
-                {!loading &&
+                {!loading && (
                     <>
-                        <Box sx={{display: "flex", justifyContent: "flex-end", mb: 2}}>
-                            <Button variant="contained" color="primary">
-                                Add Product
+                        <Box sx={{display: "flex", justifyContent: "space-between", mb: 2}}>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={gridView}
+                                        onChange={() => setGridView(!gridView)}
+                                        color="primary"
+                                    />
+                                }
+                                label={gridView ? "Grid View" : "Table View"}
+                            />
+                            <Button variant="contained" color="primary" onClick={() => setAddAccommodationDialogOpen(true)}>
+                                Add Accommodation
                             </Button>
                         </Box>
-                        <AccommodationGrid accommodation={accommodations} onEdit={onEdit} onDelete={onDelete}/>
-                    </>}
+                        {gridView ? (
+                            <AccommodationGrid accommodation={accommodations} onEdit={onEdit} onDelete={onDelete}/>
+                        ) : (
+                            <AccommodationTable accommodation={accommodations} onEdit={onEdit} onDelete={onDelete}/>
+                        )}
+                    </>
+                )}
             </Box>
-            {/*<AddProductDialog*/}
-            {/*    open={addProductDialogOpen}*/}
-            {/*    onClose={() => setAddProductDialogOpen(false)}*/}
-            {/*    onAdd={onAdd}*/}
-            {/*/>*/}
+            <AddAccommodationDialog
+                open={addAccommodationDialogOpen}
+                onClose={() => setAddAccommodationDialogOpen(false)}
+                onAdd={onAdd}
+            />
         </>
     );
 };
